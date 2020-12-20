@@ -1,8 +1,23 @@
-import os
-import sys
+# Visit https://github.com/lowlighter/metrics/blob/master/action.yml for full reference
+name: GitHub metrics
+on:
+  # Schedule updates
+  schedule: [{cron: "0 * * * *"}]
+  push: {branches: "master"}
+jobs:
+  github-metrics:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: lowlighter/metrics@latest
+        with:
+          # You'll need to setup a personal token in your secrets.
+          token: ${{ secrets.METRICS_TOKEN }}
+          # GITHUB_TOKEN is a special auto-generated token used for commits
+          committer_token: ${{ secrets.GITHUB_TOKEN }}
 
-version = f"{sys.version_info.major}.{sys.version_info.minor}"
-
-print(f"Hello World, from Python {version} in an external script!")
-
-print(f"Did you know that {os.getenv('SPAM_STRING', 'there is a SPAM_STRING')} ?!")
+          # Options
+          user: a4h8
+          template: classic
+          base: ""
+          plugin_isocalendar: yes
+          plugin_isocalendar_duration: full-year
